@@ -1,12 +1,3 @@
-# Lifecycle: holds multiple days
-# This should be a hash or an array that stores data about multiple days and the profits(?)
-
-# variable + array. Add a new day to the array. Function to get profit from all the days
-
-# Needs to get data from inventory and day sales/profits
-# Holds the climate
-# Calls population counter
-
 require_relative 'day'
 require_relative 'climate'
 require_relative 'population_counter'

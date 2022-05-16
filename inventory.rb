@@ -11,7 +11,7 @@ class Inventory
     end
 
     def show_inventory
-      puts "Balance: $#{my_inventory[:balance]}, Lemons: #{my_inventory[:lemons]}, Sugars: #{my_inventory[:sugars]}, Lemonade Made: #{my_inventory[:lemonade_made]}"
+      puts "💰Balance: $#{my_inventory[:balance].round(2)}, 🍋Lemons: #{my_inventory[:lemons]}, 🍬Sugars: #{my_inventory[:sugars]}, 🥤Lemonade Made: #{my_inventory[:lemonade_made]}"
     end
 
     def add(type, amount)
@@ -26,6 +26,4 @@ class Inventory
 
 end
 
-# inventory = Inventory.new
-# puts inventory.my_inventory[:balance]
 

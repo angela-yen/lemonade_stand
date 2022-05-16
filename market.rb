@@ -1,8 +1,3 @@
-# Market: calculates lemon + sugar prices
-
-# require how many lemons and sugar the user wants to purchase today.
-
-
 class Market
 
     def price_of_lemon
@@ -14,10 +9,3 @@ class Market
     end
 
 end
-
-# market = Market.new
-# puts market.price_of_lemon
-# puts market.price_of_sugar
-
-
-# new price can be generated each day and be sent to 'day' to calculate the price of each lemonade

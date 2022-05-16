@@ -9,13 +9,13 @@ class Day
     end
 
     def about_today
-        puts "Today's temperature is #{current_temperature}. Today's lemon price is $#{market.price_of_lemon}/lemon and sugar price is $#{market.price_of_sugar}/sugar"
+        puts "Today's temperature is 🌡 #{current_temperature}. Today's lemon price is $#{market.price_of_lemon}/🍋 and sugar price is $#{market.price_of_sugar}/🍬"
         puts "Here is your inventory:"
         inventory.show_inventory
     end
 
     def purchase_lemon
-        puts "How many lemons would you like to buy?"
+        puts "How many lemons would you like to buy? 🍋"
         @number_of_lemons = gets.chomp.to_i
     end
 
@@ -28,7 +28,7 @@ class Day
     end 
 
     def purchase_sugar
-        puts "How many sugars would you like to buy?"
+        puts "How many sugars would you like to buy? 🍬"
         @number_of_sugars = gets.chomp.to_i
     end
 
@@ -42,20 +42,16 @@ class Day
 
     def total_cost(cost_of_lemons, cost_of_sugars)
       total = cost_of_lemons + cost_of_sugars.round(2)
-
-      # raise Exception.new('Not enough money!') unless total < inventory.my_inventory[:balance]
-      # total
-      
     end
 
     def how_many_lemonades
-      puts "How many cups of lemonade would you like to make?"
+      puts "How many cups of lemonade would you like to make? 🥤"
         @number_of_cups = gets.chomp.to_i
     end
 
     def make_lemonade(how_many_lemonades)
 
-      raise Exception.new('Error not enough lemons or sugars') unless how_many_lemonades <= inventory.my_inventory[:lemons] && inventory.my_inventory[:sugars]
+      raise Exception.new('Error not enough lemons 🍋 or sugars 🍬, try again!') unless how_many_lemonades <= inventory.my_inventory[:lemons] && inventory.my_inventory[:sugars]
 
     end
 
@@ -70,34 +66,21 @@ class Day
     end
 
     def summary(total_today, money_today, today_profit)
-        puts "Your total cost of purchase is $#{total_today.round(2)}"
-        puts "Your money made today is $#{money_today.round(2)}"
-        puts "Your total profit for today is $#{today_profit.round(2)}"
+        puts "Your total cost of purchase is $#{total_today.round(2)} 💸"
+        puts "Your money made today is $#{money_today.round(2)} 💰"
+        puts "Your total profit for today is $#{today_profit.round(2)} 🤑"
     end
 
     def process!
       puts about_today
-      
-      # number_of_lemons = nil
-      # number_of_sugars = nil
-      # cost_of_lemons = nil
-      # cost_of_sugars = nil
-      # today_cost = nil
+    
+      number_of_lemons = purchase_lemon
+      cost_of_lemons = lemon_cost(number_of_lemons)
+    
+      number_of_sugars = purchase_sugar
+      cost_of_sugars = sugar_cost(number_of_sugars)
 
-      # loop do 
-        number_of_lemons = purchase_lemon
-        cost_of_lemons = lemon_cost(number_of_lemons)
-      
-        number_of_sugars = purchase_sugar
-        cost_of_sugars = sugar_cost(number_of_sugars)
-
-        # begin
-          today_cost = total_cost(cost_of_lemons, cost_of_sugars).to_f.round(2)
-      #     break
-      #   rescue Exception => exception
-      #     puts exception.message
-      #   end
-      # end
+      today_cost = total_cost(cost_of_lemons, cost_of_sugars)
       
       add_lemon(number_of_lemons)
       add_sugar(number_of_sugars)
@@ -114,7 +97,7 @@ class Day
 
       inventory.remove(:lemons, @number_of_cups)
       inventory.remove(:sugars, @number_of_cups)
-      inventory.remove(:balance, today_cost.round(2))
+      inventory.remove(:balance, today_cost)
 
       inventory.add(:lemonade_made, @number_of_cups)
 
@@ -123,7 +106,7 @@ class Day
 
       profit_today = profit(money_made_today, today_cost)
 
-      summary = summary(today_cost.round(2), money_made_today, profit_today)
+      summary = summary(today_cost, money_made_today, profit_today)
       puts summary
     end
 end
