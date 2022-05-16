@@ -9,7 +9,7 @@ class Day
     end
 
     def about_today
-        puts "Today's temperature is 🌡 #{current_temperature}. Today's lemon price is $#{market.price_of_lemon}/🍋 and sugar price is $#{market.price_of_sugar}/🍬"
+        puts "Today's temperature is 🌡  #{current_temperature}. Today's lemon price is $#{market.price_of_lemon}/🍋 and sugar price is $#{market.price_of_sugar}/🍬"
         puts "Here is your inventory:"
         inventory.show_inventory
     end
@@ -51,7 +51,7 @@ class Day
 
     def make_lemonade(how_many_lemonades)
 
-      raise Exception.new('Error not enough lemons 🍋 or sugar 🍬, try again!') unless how_many_lemonades <= inventory.my_inventory[:lemons] && inventory.my_inventory[:sugar]
+      raise Exception.new('Oh no! Not enough lemons 🍋 or sugar 🍬, try again!') unless how_many_lemonades <= inventory.my_inventory[:lemons] && inventory.my_inventory[:sugar]
 
     end
 
