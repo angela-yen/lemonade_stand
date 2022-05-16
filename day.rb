@@ -20,18 +20,16 @@ class Day
     end
 
     def lemon_cost(number_of_lemons)
-        cost_of_lemons = @number_of_lemons * market.price_of_lemon
-        return cost_of_lemons
+        @number_of_lemons * market.price_of_lemon
     end
 
     def add_lemon(number_of_lemons)
-      inventory.add(:lemons, number_of_lemons)
+      inventory.add(:lemons, @number_of_lemons)
     end 
 
     def purchase_sugar
         puts "How many sugars would you like to buy?"
-        cost_of_sugars = @number_of_sugars = gets.chomp.to_i
-        return cost_of_sugars
+        @number_of_sugars = gets.chomp.to_i
     end
 
     def sugar_cost(number_of_sugars)
@@ -39,41 +37,30 @@ class Day
     end
 
     def add_sugar(number_of_sugars)
-      inventory.add(:sugars, number_of_sugars)
+      inventory.add(:sugars, @number_of_sugars)
     end
 
     def total_cost(cost_of_lemons, cost_of_sugars)
-      cost_of_lemons + cost_of_sugars.round(2)
+      total = cost_of_lemons + cost_of_sugars.round(2)
 
-      # raise Exception.new('Not enough money!') unless cost_of_lemons + cost_of_sugars < inventory.my_inventory[:balance]
-
-      # cost_of_lemons + cost_of_sugars.round(2)
+      # raise Exception.new('Not enough money!') unless total < inventory.my_inventory[:balance]
+      # total
       
     end
 
-    def check_cost_with_balance(total_cost)
-      loop do 
-        puts "Not enough money, try again"
-        purchase_lemon
-        purchase_sugar
-        unless inventory.my_inventory[:balance] - total_cost > 0
-          break
-        end
-      end
-    end 
-
-    def make_lemonade
+    def how_many_lemonades
       puts "How many cups of lemonade would you like to make?"
-        number_of_cups = gets.chomp.to_i
+        @number_of_cups = gets.chomp.to_i
+    end
 
-        # raise Exception.new('Error not enough lemons or sugars') unless number_of_cups.to_i <= inventory.my_inventory[:lemons] && inventory.my_inventory[:sugars]
+    def make_lemonade(how_many_lemonades)
 
-        # number_of_cups
+      raise Exception.new('Error not enough lemons or sugars') unless how_many_lemonades <= inventory.my_inventory[:lemons] && inventory.my_inventory[:sugars]
 
     end
 
-    def money_made_today(number_of_cups)
-        cups_sold = [current_population, number_of_cups].min
+    def money_made_today(make_lemonade)
+        cups_sold = [current_population, make_lemonade].min
         money_today = cups_sold * 2
         return money_today.round(2)
     end
@@ -90,54 +77,53 @@ class Day
 
     def process!
       puts about_today
+      
+      # number_of_lemons = nil
+      # number_of_sugars = nil
+      # cost_of_lemons = nil
+      # cost_of_sugars = nil
+      # today_cost = nil
 
-      number_of_lemons = purchase_lemon
-      cost_of_lemons = lemon_cost(@number_of_lemons)
-    
-      number_of_sugars = purchase_sugar
-      cost_of_sugars = sugar_cost(number_of_sugars)
-      today_cost = total_cost(cost_of_lemons, cost_of_sugars).to_f.round(2)
+      # loop do 
+        number_of_lemons = purchase_lemon
+        cost_of_lemons = lemon_cost(number_of_lemons)
       
-      total_cost = today_cost
-      
-      check_cost_with_balance(total_cost)
-      
-      # loop do
-      #     if today_cost < inventory.my_inventory[:balance] 
-      #       puts "Not enough money!, try again"
-      #       break
-      #     end
+        number_of_sugars = purchase_sugar
+        cost_of_sugars = sugar_cost(number_of_sugars)
+
+        # begin
+          today_cost = total_cost(cost_of_lemons, cost_of_sugars).to_f.round(2)
+      #     break
+      #   rescue Exception => exception
+      #     puts exception.message
       #   end
+      # end
       
       add_lemon(number_of_lemons)
       add_sugar(number_of_sugars)
-   
-     
-      # loop do
-      #     number_of_cups = make_lemonade
-      #     puts "Not enough lemons and/or sugars! Try again"
-      #     puts inventory.show_inventory
-      #     number_of_cups
 
-      #     if number_of_cups > (inventory.my_inventory[:lemons] + purchase_lemon) && (inventory.my_inventory[:sugars] + purchase_sugar)
-      #     break
-      #   end
-      # end 
-      
-      number_of_cups = make_lemonade
-      
-      inventory.remove(:balance, today_cost.round)
-      inventory.remove(:lemons, number_of_cups)
-      inventory.remove(:sugars, number_of_cups)
+      number_of_cups = nil
+      loop do
+        begin
+          number_of_cups = make_lemonade(how_many_lemonades)
+          break
+        rescue Exception => exception
+          puts exception.message
+        end 
+      end
 
-      inventory.add(:lemonade_made, number_of_cups)
+      inventory.remove(:lemons, @number_of_cups)
+      inventory.remove(:sugars, @number_of_cups)
+      inventory.remove(:balance, today_cost.round(2))
 
-      money_made_today = money_made_today(number_of_cups)
+      inventory.add(:lemonade_made, @number_of_cups)
+
+      money_made_today = money_made_today(@number_of_cups)
       inventory.add(:balance, money_made_today)
 
       profit_today = profit(money_made_today, today_cost)
 
-      summary = summary(today_cost, money_made_today, profit_today)
+      summary = summary(today_cost.round(2), money_made_today, profit_today)
       puts summary
     end
 end
