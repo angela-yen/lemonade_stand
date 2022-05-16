@@ -28,20 +28,20 @@ class Day
     end 
 
     def purchase_sugar
-        puts "How many sugars would you like to buy? 🍬"
-        @number_of_sugars = gets.chomp.to_i
+        puts "How much sugar would you like to buy? 🍬"
+        @number_of_sugar = gets.chomp.to_i
     end
 
-    def sugar_cost(number_of_sugars)
-        @number_of_sugars * market.price_of_sugar
+    def sugar_cost(number_of_sugar)
+        @number_of_sugar * market.price_of_sugar
     end
 
-    def add_sugar(number_of_sugars)
-      inventory.add(:sugars, @number_of_sugars)
+    def add_sugar(number_of_sugar)
+      inventory.add(:sugar, @number_of_sugar)
     end
 
-    def total_cost(cost_of_lemons, cost_of_sugars)
-      total = cost_of_lemons + cost_of_sugars.round(2)
+    def total_cost(cost_of_lemons, cost_of_sugar)
+      total = cost_of_lemons + cost_of_sugar.round(2)
     end
 
     def how_many_lemonades
@@ -51,7 +51,7 @@ class Day
 
     def make_lemonade(how_many_lemonades)
 
-      raise Exception.new('Error not enough lemons 🍋 or sugars 🍬, try again!') unless how_many_lemonades <= inventory.my_inventory[:lemons] && inventory.my_inventory[:sugars]
+      raise Exception.new('Error not enough lemons 🍋 or sugar 🍬, try again!') unless how_many_lemonades <= inventory.my_inventory[:lemons] && inventory.my_inventory[:sugar]
 
     end
 
@@ -77,13 +77,13 @@ class Day
       number_of_lemons = purchase_lemon
       cost_of_lemons = lemon_cost(number_of_lemons)
     
-      number_of_sugars = purchase_sugar
-      cost_of_sugars = sugar_cost(number_of_sugars)
+      number_of_sugar = purchase_sugar
+      cost_of_sugar = sugar_cost(number_of_sugar)
 
-      today_cost = total_cost(cost_of_lemons, cost_of_sugars)
+      today_cost = total_cost(cost_of_lemons, cost_of_sugar)
       
       add_lemon(number_of_lemons)
-      add_sugar(number_of_sugars)
+      add_sugar(number_of_sugar)
 
       number_of_cups = nil
       loop do
@@ -96,7 +96,7 @@ class Day
       end
 
       inventory.remove(:lemons, @number_of_cups)
-      inventory.remove(:sugars, @number_of_cups)
+      inventory.remove(:sugar, @number_of_cups)
       inventory.remove(:balance, today_cost)
 
       inventory.add(:lemonade_made, @number_of_cups)
