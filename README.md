@@ -37,3 +37,5 @@ PopulationCounter: works out how many people walk past
 Climate: works out how hot the day is based on the last one
 Market: calculates lemon + sugar prices
 Extensions - DO NOT WORK ON UN
+
+To start the app run `ruby lemonade_stand.rb`
